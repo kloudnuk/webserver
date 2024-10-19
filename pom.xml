@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.0-SNAPSHOT</version>
+		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kloudnuk</groupId>
@@ -84,10 +84,25 @@
 	</dependencies>
 
 	<build>
+		<resources>
+            <!-- Include application.yml as a resource -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/application.yml</include>
+                </includes>
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<profiles>
+						<profile>prod</profile>
+						<profile>test</profile>
+					</profiles>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -127,5 +142,4 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-
 </project>

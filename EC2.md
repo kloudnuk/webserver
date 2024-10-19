@@ -204,7 +204,7 @@ Certbot has set up a scheduled task to automatically renew this certificate in t
 
 7. Run the postgresql docker container:
     ```bash
-    docker run -it --name pg-stg --mount source=postgres,target=/var/lib/postgresql/data --network backend -p 5432:5432 registry.gitlab.com/kloudnuk/postgres:0.0.1-stg
+    docker run -d --name postgres --env-file /home/ubuntu/kn/pg.env --mount source=postgres,target=/var/lib/postgresql/data --network backend -p 5432:5432 registry.gitlab.com/kloudnuk/postgres:16.4-amd64
     ```
 
 8. Copy the server certificates into the server container's volume host mount-point.
@@ -219,5 +219,5 @@ Certbot has set up a scheduled task to automatically renew this certificate in t
     docker run -it --name kn-stg --env-file test.env --mount source=kloudnuk,target=/nuk/ --network=backend --network=frontend -p 443:443 registry.gitlab.com/kloudnuk/kloudnuk:0.0.2-stg
 
     --On AWS EC2 instance--
-    docker run -it --name kn-stg --env-file /home/ubuntu/kn/test.env --mount source=kloudnuk,target=/nuk/ --network=backend --network=frontend -p 443:443 registry.gitlab.com/kloudnuk/kloudnuk:0.0.2-stg
+    docker run -it --name webserver --env-file /home/ubuntu/kn/wb.env --mount source=kloudnuk,target=/nuk/ --network=backend --network=frontend -p 443:443 registry.gitlab.com/kloudnuk/kloudnuk:wb-0.1.4
     ```
