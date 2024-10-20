@@ -31,13 +31,11 @@ import com.kloudnuk.webserver.daos.api.IDeviceRepo;
 import com.kloudnuk.webserver.daos.api.IOrgRepo;
 import com.kloudnuk.webserver.daos.api.IUserAuthorityRepo;
 import com.kloudnuk.webserver.daos.api.IUserRepo;
-import com.kloudnuk.webserver.daos.api.IDeviceCredentialsRepo;
 import com.kloudnuk.webserver.ddos.DeviceDdo;
 import com.kloudnuk.webserver.ddos.UserAuthorityDdo;
 import com.kloudnuk.webserver.ddos.UserDdo;
 import com.kloudnuk.webserver.enums.DeviceStatus;
 import com.kloudnuk.webserver.models.Device;
-import com.kloudnuk.webserver.models.DeviceCredentials;
 import com.kloudnuk.webserver.models.EntityUpdate;
 import com.kloudnuk.webserver.models.Org;
 import com.kloudnuk.webserver.models.SoftwarePackage;
@@ -73,9 +71,6 @@ class WebserverApplicationTests {
 
 	@Autowired
 	IDeviceRepo deviceRepo;
-
-	@Autowired
-	IDeviceCredentialsRepo credentialsRepo;
 
 	@Autowired
 	IOrgRepo orgRepo;
@@ -174,46 +169,6 @@ class WebserverApplicationTests {
 
 	@Test
 	@Order(7)
-	@DisplayName("DeviceCredentials Insert / Read By Device Id Test")
-	void CredentialsInsert() {
-		DeviceDdo dev = deviceRepo.readByName("test_nuk").orElseThrow();
-		DeviceCredentials cred = new DeviceCredentials(dev.controllerid(), "test-ssh-private-key",
-				"test-ssh-public-key", "wg-private-key", "wg-public-key", "test-mongodbcertfs",
-				"test-password");
-		List<DeviceCredentials> credentialsList = new ArrayList<DeviceCredentials>();
-		credentialsList.add(cred);
-		credentialsRepo.insert(credentialsList);
-		DeviceCredentials testcred =
-				credentialsRepo.readByControllerId(dev.controllerid()).orElseThrow();
-		assertEquals(cred.controllerid(), testcred.controllerid());
-	}
-
-	@Test
-	@Order(8)
-	@DisplayName("DeviceCredentials Update One Test")
-	void CredentialsUpdateOne() {
-		credentialsRepo.updateOne("sshprivatekey", "new-ssh-private-key", "controllerid",
-				"72c00007-8c00-4708-0148-0944547420d3");
-		DeviceCredentials testcred = credentialsRepo
-				.readByControllerId(UUID.fromString("72c00007-8c00-4708-0148-0944547420d3"))
-				.orElseThrow();
-		assertEquals("new-ssh-private-key", testcred.sshPrivateKey());
-	}
-
-	@Test
-	@Order(9)
-	@DisplayName("Device Credentials Delete One Test")
-	void CredentialsDeleteOne() {
-		credentialsRepo.delete("controllerid", "72c00007-8c00-4708-0148-0944547420d3");
-		assertThrows(EmptyResultDataAccessException.class, () -> {
-			credentialsRepo
-					.readByControllerId(UUID.fromString("72c00007-8c00-4708-0148-0944547420d3"));
-		});
-
-	}
-
-	@Test
-	@Order(10)
 	@DisplayName("Device Repo Delete One Test")
 	void DeviceDeleteOne() {
 		deviceRepo.delete("name", "test_nuk");
@@ -223,7 +178,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(11)
+	@Order(8)
 	@DisplayName("Org Repo Read All Test")
 	void OrgReadAll() {
 		Stream<Org> orgStream = orgRepo.readAll();
@@ -231,7 +186,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(12)
+	@Order(9)
 	@DisplayName("Org Repo Create Test")
 	void OrgCreate() {
 		List<Org> orgList = new ArrayList<Org>();
@@ -243,7 +198,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(13)
+	@Order(10)
 	@DisplayName("Org Repo Read-By-Id Test")
 	void OrgReadById() {
 		Org org = orgRepo.readById(2).orElseThrow();
@@ -251,7 +206,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(14)
+	@Order(11)
 	@DisplayName("Org Repo Get Org Id Test")
 	void OrgGetId() {
 		Long id = orgRepo.getOrgId(ADMIN_TESTORG);
@@ -259,7 +214,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(15)
+	@Order(12)
 	@DisplayName("Org Repo Update One Test")
 	void OrgUpdateOne() {
 		orgRepo.updateOne("name", "updated-test-org", "name", "test-org");
@@ -269,7 +224,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(16)
+	@Order(13)
 	@DisplayName("Org Repo Delete One Test")
 	void OrgDeleteOne() {
 		orgRepo.delete("name", "updated-test-org");
@@ -282,7 +237,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(17)
+	@Order(14)
 	@DisplayName("User Repo Read All Test")
 	void UserReadAll() {
 		List<User> ddoList = userRepo.readAll(ADMIN_TESTORG).toList();
@@ -290,7 +245,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(18)
+	@Order(15)
 	@DisplayName("User Repo Insert Test")
 	void UserInsert() {
 		List<UserDdo> ddoList = new ArrayList<UserDdo>();
@@ -303,7 +258,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(19)
+	@Order(16)
 	@DisplayName("User Repo Get and Read By Id Test")
 	void UserGetReadId() {
 		Long userid = userRepo.getUserId("nuk_usertest");
@@ -312,7 +267,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(20)
+	@Order(17)
 	@DisplayName("User Repo Read By Name Test")
 	void UserReadByName() {
 		User user = userRepo.readByName("nuk_usertest").orElseThrow();
@@ -320,7 +275,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(21)
+	@Order(18)
 	@DisplayName("User Repo Update One")
 	void UserUpdateOne() {
 		userRepo.updateOne("name", "updated_usertest", "name", "nuk_usertest");
@@ -329,7 +284,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(22)
+	@Order(19)
 	@DisplayName("UserAuthority Insert and Read By Username Test")
 	void UserAuthorityInsert() {
 		Long userid = userRepo.getUserId("updated_usertest");
@@ -343,14 +298,14 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(23)
+	@Order(20)
 	@DisplayName("UserAuthority Read By Role Test")
 	void UserAuthorityReadByRole() {
 		assertTrue(userAuthorityRepo.readByRole("CONTRIBUTOR").toList().size() > 0);
 	}
 
 	@Test
-	@Order(24)
+	@Order(21)
 	@DisplayName("UserAuthority Read By Id Test")
 	void UserAuthorityReadById() {
 		UserAuthority userauth = userAuthorityRepo.readById(1L).orElseThrow();
@@ -358,7 +313,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(25)
+	@Order(22)
 	@DisplayName("UserAuthority Update One Test")
 	void UserAuthorityUpdateOne() {
 		userAuthorityRepo.updateOne("authorityid", Long.toString(2), "userid",
@@ -366,7 +321,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(26)
+	@Order(23)
 	@DisplayName("UserAUthority Delete One Test")
 	void UserAUthorityDeleteOne() {
 		Long userid = userRepo.getUserId("updated_usertest");
@@ -375,7 +330,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(27)
+	@Order(24)
 	@DisplayName("User Repo Delete One")
 	void UserDeleteOne() {
 		userRepo.delete("name", "updated_usertest");
@@ -390,7 +345,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(28)
+	@Order(25)
 	@DisplayName("Enroll Device API Test")
 	void EnrollDevicesAPI() {
 		rest.getInterceptors()
@@ -413,7 +368,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(29)
+	@Order(26)
 	@DisplayName("Read All Devices API Test")
 	void ReadAllDevicesAPI() {
 		rest.getInterceptors()
@@ -425,7 +380,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(30)
+	@Order(27)
 	@DisplayName("Authorize Device API Test")
 	void AuthorizeDeviceAPI() {
 		rest.getInterceptors()
@@ -446,7 +401,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(31)
+	@Order(28)
 	@DisplayName("Update Device Info API Test")
 	void UpdateDeviceAPI() {
 		rest.getInterceptors()
@@ -467,7 +422,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(32)
+	@Order(29)
 	@DisplayName("Read All Users API Test")
 	void ReadUsersAPI() {
 		rest.getInterceptors()
@@ -479,7 +434,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(33)
+	@Order(30)
 	@DisplayName("Create Users API Test")
 	void CreateUsersAPI() {
 		// rest.getInterceptors()
@@ -515,43 +470,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(34)
-	@DisplayName("Create Users with random password API Test")
-	void CreateUsersAPIwithRandomPassword() {
-		// rest.getInterceptors()
-		// .add(new BasicAuthenticationInterceptor(ADMIN_TESTUSR, ADMIN_TESTPASS));
-
-		// List<User> updateUsers = new ArrayList<User>();
-		// updateUsers.add(new User("user-randpass-apitest", "user-randpass-apitest@nopreply.com",
-		// ADMIN_TESTORG, "null", true));
-
-		// var currentUsers =
-		// rest.getForObject(TEST_URI.concat("/users/?org=" + ADMIN_TESTORG), User[].class);
-
-		// RequestEntity<List<User>> request = RequestEntity
-		// .post(TEST_URI.concat("/users/create?org=" + ADMIN_TESTORG + "&genpass=true"))
-		// .accept(MediaType.APPLICATION_JSON).body(updateUsers);
-		// ResponseEntity<User[]> response = rest.exchange(request, User[].class);
-
-		// log.info("CREATE USERS WITH RANDOM PASSWORD API TEST - Response Status: "
-		// .concat(response.getStatusCode().toString()));
-		// log.info("CREATE USERS WITH RANDOM PASSWORD API TEST - Existing user count: "
-		// .concat(String.valueOf(currentUsers.length)));
-		// log.info("CREATE USERS WITH RANDOM PASSWORD API TEST - New user count: "
-		// .concat(String.valueOf(response.getBody().length)));
-		// log.info(response.getBody()[0].name() + ": " + response.getBody()[0].password());
-
-		// var newUsers =
-		// rest.getForObject(TEST_URI.concat("/users/?org=" + ADMIN_TESTORG), User[].class);
-
-		// assertTrue(response.getStatusCode().is2xxSuccessful());
-		// assertTrue(response.getBody().length == 1);
-		// assertTrue(currentUsers.length < newUsers.length);
-	}
-
-	@SuppressWarnings("null")
-	@Test
-	@Order(35)
+	@Order(31)
 	@DisplayName("Authorize User API Test")
 	void AuthorizeUserApi() {
 		// rest.getInterceptors()
@@ -569,7 +488,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(36)
+	@Order(32)
 	@DisplayName("Test User Authorization API (Positive)")
 	void PositiveAuthorizedUserTest() {
 		// rest.getInterceptors()
@@ -580,7 +499,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(37)
+	@Order(33)
 	@DisplayName("Delete Device API Test")
 	void DeleteDeviceAPI() {
 		rest.getInterceptors()
@@ -592,7 +511,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(38)
+	@Order(34)
 	@DisplayName("Test User Authorization (Negative)")
 	void NegativeAuthorizedUserTest() {
 		// rest.getInterceptors()
@@ -605,7 +524,7 @@ class WebserverApplicationTests {
 
 	@SuppressWarnings("null")
 	@Test
-	@Order(39)
+	@Order(35)
 	@DisplayName("Search User API Test")
 	void UserSearchAPI() {
 		// rest.getInterceptors()
@@ -620,7 +539,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(40)
+	@Order(36)
 	@DisplayName("Edit User API Test")
 	void UserEditAPI() {
 		// rest.getInterceptors()
@@ -636,7 +555,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(41)
+	@Order(37)
 	@DisplayName("Suspend User API Test")
 	void UserSuspendAPI() {
 		// rest.getInterceptors()
@@ -650,7 +569,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(42)
+	@Order(38)
 	@DisplayName("Change Password User API Test")
 	void UserPasswordChangeAPI() {
 		// rest.getInterceptors()
@@ -664,7 +583,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(43)
+	@Order(39)
 	@DisplayName("Remove User API Test")
 	void RemoveUserAPI() {
 		// rest.getInterceptors()
@@ -686,7 +605,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(44)
+	@Order(40)
 	@DisplayName("Create Organization API Test")
 	void CreateOrgAPI() {
 		User admin = new User("apitest_adminuser", "adminuser@apitest.com", "apitest-org",
@@ -703,7 +622,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(45)
+	@Order(41)
 	@DisplayName("List Software Packages Service Test")
 	void ListSoftwarePackages() {
 		List<SoftwarePackage> packages = distributor.listPackages();
@@ -716,7 +635,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(46)
+	@Order(42)
 	@DisplayName("Simple MongoDb Provider - Get All Devices with all properties")
 	void MongoDbSimpleGetDevices() {
 		MongoDatabase db = dsprovider.getDatabase("Playground");
@@ -728,7 +647,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(47)
+	@Order(43)
 	@DisplayName("Simple MongoDb Provider - Get All Devices with most important properties")
 	void MongoDbSimpleGetExclusiveDevices() {
 		List<Document> devices = dsprovider.getDeviceData("Playground",
@@ -739,7 +658,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(48)
+	@Order(44)
 	@DisplayName("Simple MongoDb Provider - Get All Points")
 	void MongoDbSimpleGetAllPoints() {
 		List<Document> points = dsprovider.getPointLists("Playground").join();
@@ -748,7 +667,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(49)
+	@Order(45)
 	@DisplayName("Simple MongoDb Provider - Get All Device Configuration Profiles")
 	void MongoDbSimpleGetAllDeviceConfigs() {
 		List<Document> configs = dsprovider.getDeviceConfigurations("Playground").join();
@@ -756,7 +675,7 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(50)
+	@Order(46)
 	@DisplayName("Simple MongoDb Provider - Get Logs by timestamp")
 	void MongoDbSimpleGetLogs() {
 		List<Document> logs = dsprovider.getDeviceLogs("Playground").join();
@@ -770,7 +689,7 @@ class WebserverApplicationTests {
 	 * inclusive: {"timestamp": {$regex: /2024-07-29T1[8-9]|2[0-2]:\d{2}:\d{2}\+\d{4}/}}
 	 */
 	@Test
-	@Order(51)
+	@Order(47)
 	@DisplayName("Simple MongoDb Provider - Get Device Log by id")
 	void MongoDbSimpleGetLogById() {
 		try {
@@ -786,14 +705,14 @@ class WebserverApplicationTests {
 	}
 
 	@Test
-	@Order(52)
+	@Order(48)
 	@DisplayName("MongoDb Connections Manager - Create New DB User")
 	void MongoDbManagerCreateNewDbUser() {
 		dsmanager.createDbUser(ADMIN_TESTORG, "Test_Device_UUID");
 	}
 
 	@Test
-	@Order(53)
+	@Order(49)
 	@DisplayName("MongoDb Connections Manager - Create New DB User")
 	void MongoDbManagerCreateX509Cert() {
 		dsmanager.createX509Cert("Test_Device_UUID", 3);

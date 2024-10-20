@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
-import com.kloudnuk.webserver.daos.api.IDeviceCredentialsRepo;
 import com.kloudnuk.webserver.daos.api.IDeviceRepo;
 import com.kloudnuk.webserver.daos.api.IOrgRepo;
 import com.kloudnuk.webserver.ddos.DeviceDdo;
@@ -59,16 +58,12 @@ public class DeviceController {
 
     private IDataStoreManager dsmanager;
 
-    private IDeviceCredentialsRepo credentialsRepo;
-
     private IDeviceRepo repo;
 
     private IOrgRepo orgRepo;
 
-    public DeviceController(IDeviceRepo repo, IDeviceCredentialsRepo credentialsRepo,
-            IOrgRepo orgRepo, IDataStoreManager dsmanager) {
+    public DeviceController(IDeviceRepo repo, IOrgRepo orgRepo, IDataStoreManager dsmanager) {
         this.repo = repo;
-        this.credentialsRepo = credentialsRepo;
         this.orgRepo = orgRepo;
         this.dsmanager = dsmanager;
     }
