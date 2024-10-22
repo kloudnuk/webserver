@@ -117,6 +117,8 @@ public class UserRepoPostgres implements IUserRepo {
                                 + System.getenv("KN_PGCRYPTOPASS") + "\'), 'hex'),?)";
 
                 jdbc.batchUpdate(sql1 + sql2, new BatchPreparedStatementSetter() {
+
+                        @SuppressWarnings("null")
                         public void setValues(PreparedStatement ps, int i) throws SQLException {
                                 ps.setString(1, users.get(i).name());
                                 ps.setString(2, users.get(i).email());

@@ -33,6 +33,8 @@ public class OrgRepoPostgres implements IOrgRepo {
     public void create(List<Org> orgs) {
         jdbc.batchUpdate("INSERT INTO organizations(" + "name) " + "VALUES (?)",
                 new BatchPreparedStatementSetter() {
+
+                    @SuppressWarnings("null")
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         ps.setString(1, orgs.get(i).name());
                     }

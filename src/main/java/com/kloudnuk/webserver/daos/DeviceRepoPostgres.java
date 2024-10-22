@@ -46,6 +46,7 @@ public class DeviceRepoPostgres implements IDeviceRepo {
                         + "organizationid) " + "VALUES (?,?,?,?,?,?,?,?,?)",
                 new BatchPreparedStatementSetter() {
 
+                    @SuppressWarnings("null")
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         ps.setObject(1, devices.get(i).controllerid());
                         ps.setString(2, devices.get(i).name());
