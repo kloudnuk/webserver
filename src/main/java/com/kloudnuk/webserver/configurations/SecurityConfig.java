@@ -11,7 +11,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,23 +38,12 @@ public class SecurityConfig {
         return expressionHandler;
     }
 
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    // return http
-    // .authorizeHttpRequests((authorize) -> authorize
-    // .requestMatchers("api/v1/orgs/create").anonymous().requestMatchers("/*")
-    // .hasRole("GUEST").anyRequest().authenticated())
-    // .formLogin(Customizer.withDefaults()).logout(Customizer.withDefaults())
-    // .csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults())
-    // .authenticationProvider(authprovider()).build();
-    // }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("api/v1/orgs/create").anonymous().requestMatchers("/*")
-                        .hasRole("GUEST").anyRequest().authenticated())
+                        .requestMatchers("api/v1/orgs/create", "/login/**").anonymous()
+                        .requestMatchers("/*").hasRole("GUEST").anyRequest().authenticated())
                 .formLogin(configurer -> configurer.loginPage("/login").loginProcessingUrl("/login")
                         .usernameParameter("username").passwordParameter("password")
                         .defaultSuccessUrl("/").permitAll())

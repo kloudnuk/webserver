@@ -1,5 +1,7 @@
 server:
-  port: 8000
+  ssl:
+    bundle: "knwebserver"
+  port: 443
   servlet:
     context-path: /
   compression:
@@ -7,6 +9,14 @@ server:
   address: 0.0.0.0
 
 spring:
+  ssl:
+    bundle:
+      pem:
+        knwebserver:
+          reload-on-update: true
+          keystore:
+            certificate: "file:/nuk/fullchain.pem"
+            private-key: "file:/nuk/privkey.pem"
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://${KN_DBHOST}:${KN_DBPORT}/postgres
@@ -54,7 +64,7 @@ spring:
 logging:
   pattern:
     console: "%-5level: %class{0} - %msg%n"
-#     root: INFO
-#     org.springframework.boot: DEBUG
-#     org.springframework.security: DEBUG
-#     com.kloudnuk.webserver: DEBUG
+    root: INFO
+    org.springframework.boot: DEBUG
+    org.springframework.security: DEBUG
+    com.kloudnuk.webserver: DEBUG
