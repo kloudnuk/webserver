@@ -88,6 +88,8 @@ public class UserAuthorityRepoPostgres implements IUserAuthorityRepo {
                 """;
 
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+            @SuppressWarnings("null")
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setLong(1, userauthorities.get(i).userid());
                 ps.setLong(2, userauthorities.get(i).authorityid());

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="login/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="login/login.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="App">
+            <header class="App-header">
+                <img src="login/logo.png" class="App-logo" alt="logo" />
+                <h2>Kloudnuk</h2>   
+            </header>
+            <div class=content>
+                <div id="login-box" class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <h2 class="text-center mt-5">Login</h2>
+
+                            <!-- Display error messages if login fails -->
+                            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                                Invalid username or password. Please try again.
+                            </div>
+
+                            <!-- Display message after successful logout -->
+                            <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                                You have been logged out successfully.
+                            </div>
+
+                            <form th:action="@{/login}" method="post">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                                </div>
+                                <button id="login-btn" type="submit" class="btn btn-primary w-100">Login</button>
+                            </form>
+                            <div class="text-center mt-3">
+                                <strong>Already have an account? Login here.</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="register-box" class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <h2 class="text-center mt-5">Register New Organization</h2>
+
+                            <form th:action="@{/login/register}" method="post">
+                                <div class="mb-3">
+                                    <label for="orgname" class="form-label">New Organization Name</label>
+                                    <input type="text" class="form-control" id="orgname" name="orgname" placeholder="Enter organization name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Admin User Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter admin user name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Admin User Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter admin email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Admin User Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter admin password" required>
+                                    <input type="hidden" class="form-control" id="enabled" name="enabled" value="true">
+                                </div>
+                                <button id="register-btn" type="submit" class="btn btn-primary w-100">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

@@ -42,10 +42,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("api/v1/orgs/create").anonymous().requestMatchers("/*")
-                        .hasRole("GUEST").anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults()).formLogin(Customizer.withDefaults())
-                .logout(Customizer.withDefaults()).csrf(csrf -> csrf.disable())
+                        .requestMatchers("api/v1/orgs/create", "/login/**").anonymous()
+                        .requestMatchers("/*").hasRole("GUEST").anyRequest().authenticated())
+                .formLogin(configurer -> configurer.loginPage("/login").loginProcessingUrl("/login")
+                        .usernameParameter("username").passwordParameter("password")
+                        .defaultSuccessUrl("/").permitAll())
+                .csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults())
                 .authenticationProvider(authprovider()).build();
     }
 
