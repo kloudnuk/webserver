@@ -237,3 +237,7 @@ Create the following folders and files:
         aws_access_key_id = 
         aws_secret_access_key = 
     ```
+
+### Local environment testing
+1. Use `mvn spring-boot:run` to test the webserver on your local machine.
+2. Use `psql -h localhost -U postgres` to manage the Postgresql database directly.
