@@ -411,7 +411,7 @@ class WebserverApplicationTests {
 		String uri = TEST_URI
 				.concat("/devices/edit/5bc00007-8c00-4708-0148-0944547420d3?org=" + ADMIN_TESTORG);
 		RequestEntity<EntityUpdate> request =
-				RequestEntity.put(uri).accept(MediaType.APPLICATION_JSON).body(updateobj);
+				RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON).body(updateobj);
 		try {
 			ResponseEntity<Void> response = rest.exchange(request, Void.class);
 			assertTrue(response.getStatusCode().is2xxSuccessful());

@@ -184,9 +184,9 @@ public class DeviceController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("edit/{controllerid}")
+    @PostMapping("edit/{controllerid}")
     @PreAuthorize("hasRole(#org) && hasRole('CONTRIBUTOR')")
-    public ResponseEntity<?> putMethodName(@PathVariable String controllerid,
+    public ResponseEntity<?> postMethodName(@PathVariable String controllerid,
             @RequestParam @P("org") String org, @RequestBody EntityUpdate update) {
         try {
             repo.updateOne(update.updateColumn(), update.updateValue(), update.filterColumn(),
